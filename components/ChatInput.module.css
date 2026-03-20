@@ -1,0 +1,124 @@
+.container {
+  padding: 16px 20px 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(3, 0, 20, 0.6);
+  backdrop-filter: blur(20px);
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 8px 8px 8px 16px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.inputWrapper:focus-within {
+  border-color: rgba(124, 58, 237, 0.4);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1), 0 0 20px rgba(124, 58, 237, 0.05);
+}
+
+.textarea {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--star-100);
+  font-family: var(--font-body);
+  font-size: 0.935rem;
+  line-height: 1.5;
+  resize: none;
+  max-height: 150px;
+  padding: 4px 0;
+}
+
+.textarea::placeholder {
+  color: var(--star-500);
+}
+
+.textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.charCount {
+  font-size: 0.7rem;
+  color: var(--star-500);
+  font-variant-numeric: tabular-nums;
+}
+
+.charLimit {
+  color: var(--error);
+}
+
+.sendButton {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  border: none;
+  background: rgba(124, 58, 237, 0.2);
+  color: var(--star-500);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.sendButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.sendActive {
+  background: var(--gradient-nebula);
+  color: white;
+  box-shadow: var(--glow-purple);
+}
+
+.sendActive:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(124, 58, 237, 0.5), 0 0 60px rgba(124, 58, 237, 0.2);
+}
+
+.sendActive:active {
+  transform: scale(0.95);
+}
+
+.hint {
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--star-500);
+  margin-top: 8px;
+  opacity: 0.6;
+}
+
+.hint kbd {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 12px 12px 8px;
+  }
+
+  .hint {
+    display: none;
+  }
+}

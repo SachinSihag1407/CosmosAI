@@ -1,66 +1,96 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+
+import { useState } from 'react';
+import Starfield from '@/components/Starfield';
+import ChatWindow from '@/components/ChatWindow';
+import styles from './page.module.css';
+
+const FEATURES = [
+  {
+    emoji: '🪐',
+    title: 'Planets & Moons',
+    desc: 'Explore every world in our solar system and beyond',
+  },
+  {
+    emoji: '⭐',
+    title: 'Stars & Galaxies',
+    desc: 'From stellar nurseries to supermassive black holes',
+  },
+  {
+    emoji: '🚀',
+    title: 'Space Missions',
+    desc: 'NASA, SpaceX, JWST and the future of exploration',
+  },
+  {
+    emoji: '🔭',
+    title: 'Deep Universe',
+    desc: 'Dark matter, dark energy, and the Big Bang',
+  },
+];
 
 export default function Home() {
+  const [showChat, setShowChat] = useState(false);
+
+  if (showChat) {
+    return (
+      <>
+        <Starfield />
+        <ChatWindow onBack={() => setShowChat(false)} />
+      </>
+    );
+  }
+
   return (
-    <div className={styles.page}>
+    <>
+      <Starfield />
       <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.js file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
+        {/* Hero */}
+        <section className={styles.hero}>
+          <div className={styles.badge}>
+            <span className={styles.badgeDot} />
+            AI-Powered Space Guide
+          </div>
+          <h1 className={styles.title}>
+            <span className={styles.titleLine}>Explore the</span>
+            <span className={styles.titleAccent}>Cosmos</span>
+          </h1>
+          <p className={styles.subtitle}>
+            Your intelligent guide to the universe. Ask about planets, stars, black holes,
+            NASA missions, and the deepest mysteries of space.
           </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            className={styles.cta}
+            onClick={() => setShowChat(true)}
+            id="start-exploring"
           >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+            <span className={styles.ctaText}>Start Exploring</span>
+            <svg className={styles.ctaIcon} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
+          </button>
+        </section>
+
+        {/* Features */}
+        <section className={styles.features}>
+          {FEATURES.map((feature, i) => (
+            <div
+              key={i}
+              className={styles.featureCard}
+              style={{ animationDelay: `${i * 100 + 300}ms` }}
+            >
+              <span className={styles.featureEmoji}>{feature.emoji}</span>
+              <h3 className={styles.featureTitle}>{feature.title}</h3>
+              <p className={styles.featureDesc}>{feature.desc}</p>
+            </div>
+          ))}
+        </section>
+
+        {/* Footer */}
+        <footer className={styles.footer}>
+          <p>Built with 💫 for exploring the universe</p>
+        </footer>
       </main>
-    </div>
+    </>
   );
 }

@@ -1,0 +1,67 @@
+.container {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  animation: fadeIn var(--transition-slow) ease-out;
+  padding: 4px 0;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(124, 58, 237, 0.15);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  animation: rotate-slow 8s linear infinite;
+}
+
+.bubble {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 18px 18px 18px 4px;
+  backdrop-filter: blur(10px);
+}
+
+.dots {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gradient-nebula);
+  animation: bounce 1.4s ease-in-out infinite;
+}
+
+.label {
+  font-size: 0.8rem;
+  color: var(--star-500);
+  font-style: italic;
+}
+
+@keyframes bounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-8px);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
