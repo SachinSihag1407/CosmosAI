@@ -30,12 +30,18 @@ const FEATURES = [
 
 export default function Home() {
   const [showChat, setShowChat] = useState(false);
+  const [initialPrompt, setInitialPrompt] = useState(null);
+
+  const handleStartChat = (prompt = null) => {
+    setInitialPrompt(prompt);
+    setShowChat(true);
+  };
 
   if (showChat) {
     return (
       <>
         <Starfield />
-        <ChatWindow onBack={() => setShowChat(false)} />
+        <ChatWindow onBack={() => { setShowChat(false); setInitialPrompt(null); }} initialPrompt={initialPrompt} />
       </>
     );
   }
@@ -60,7 +66,7 @@ export default function Home() {
           </p>
           <button
             className={styles.cta}
-            onClick={() => setShowChat(true)}
+            onClick={() => handleStartChat(null)}
             id="start-exploring"
           >
             <span className={styles.ctaText}>Start Exploring</span>
@@ -78,6 +84,10 @@ export default function Home() {
               key={i}
               className={styles.featureCard}
               style={{ animationDelay: `${i * 100 + 300}ms` }}
+              onClick={() => handleStartChat(`Tell me about ${feature.title}: ${feature.desc}`)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => { if (e.key === 'Enter') handleStartChat(`Tell me about ${feature.title}: ${feature.desc}`); }}
             >
               <span className={styles.featureEmoji}>{feature.emoji}</span>
               <h3 className={styles.featureTitle}>{feature.title}</h3>

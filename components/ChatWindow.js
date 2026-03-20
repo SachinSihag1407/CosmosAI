@@ -15,7 +15,7 @@ const SUGGESTED_PROMPTS = [
   { emoji: '🪐', text: "Why does Saturn have rings?" },
 ];
 
-export default function ChatWindow({ onBack }) {
+export default function ChatWindow({ onBack, initialPrompt }) {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -32,6 +32,15 @@ export default function ChatWindow({ onBack }) {
   useEffect(() => {
     scrollToBottom();
   }, [messages, streamingContent, scrollToBottom]);
+
+  // Handle initial prompt from landing page cards
+  useEffect(() => {
+    if (initialPrompt && messages.length === 0 && !isLoading) {
+      sendMessage(initialPrompt);
+    }
+    // We only want this to run exactly once when the component mounts
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const sendMessage = async (content) => {
     setError(null);
