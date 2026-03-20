@@ -6,7 +6,7 @@ An AI-powered space and astronomy chatbot with a stunning cosmic-themed UI. Ask 
 
 ## ✨ Features
 
-- **🤖 AI-Powered Chat** — Powered by Google Gemini, purpose-built for space & astronomy
+- **🤖 AI-Powered Chat** — Powered by Groq AI (Llama 3), purpose-built for space & astronomy
 - **🌠 Immersive Starfield** — Canvas-based animated background with twinkling stars, parallax, and shooting stars
 - **💬 Streaming Responses** — Real-time text streaming for a natural conversation feel
 - **🎨 Cosmic Design System** — Glass-morphism, nebula gradients, and custom animations
@@ -18,7 +18,7 @@ An AI-powered space and astronomy chatbot with a stunning cosmic-themed UI. Ask 
 ### Prerequisites
 
 - Node.js 18+ installed
-- A free Google Gemini API key from [Google AI Studio](https://aistudio.google.com/apikey)
+- A free Groq API key from [Groq Console](https://console.groq.com/keys)
 
 ### Setup
 
@@ -32,7 +32,7 @@ npm install
 
 # Set up your API key
 cp .env.example .env.local
-# Edit .env.local and add your GOOGLE_GENERATIVE_AI_API_KEY
+# Edit .env.local and add your GROQ_API_KEY
 
 # Start the dev server
 npm run dev
@@ -45,7 +45,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 | Layer | Technology |
 |-------|-----------|
 | Framework | Next.js 16 (App Router) |
-| AI Model | Google Gemini 2.0 Flash |
+| AI Model | Groq AI (Llama 3 70B) |
 | AI SDK | Vercel AI SDK |
 | Styling | Vanilla CSS + CSS Modules |
 | Fonts | Orbitron + Inter (Google Fonts) |
@@ -82,7 +82,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ```
 cosmos-ai/
 ├── app/
-│   ├── api/chat/route.js    # AI chat API with Gemini
+│   ├── api/chat/route.js    # AI chat API with Groq
 │   ├── globals.css           # Cosmic design system
 │   ├── layout.js             # Root layout with SEO
 │   ├── page.js               # Landing page + chat toggle
@@ -109,7 +109,7 @@ npm run build
 npx vercel --prod
 ```
 
-Don't forget to add your `GOOGLE_GENERATIVE_AI_API_KEY` to your Vercel project's environment variables.
+Don't forget to add your `GROQ_API_KEY` to your Vercel project's environment variables.
 
 ## 📄 License
 
