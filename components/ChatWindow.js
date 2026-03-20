@@ -20,6 +20,7 @@ export default function ChatWindow({ onBack, initialPrompt }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [streamingContent, setStreamingContent] = useState('');
+  const [soundEnabled, setSoundEnabled] = useState(true);
   const messagesEndRef = useRef(null);
   const chatBodyRef = useRef(null);
 
@@ -41,6 +42,46 @@ export default function ChatWindow({ onBack, initialPrompt }) {
     // We only want this to run exactly once when the component mounts
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const playPopSound = useCallback(() => {
+    if (!soundEnabled) return;
+    try {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      const ctx = new AudioContext();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(600, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.1);
+      
+      gain.gain.setValueAtTime(0, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.1, ctx.currentTime + 0.05);
+      gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.2);
+      
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.2);
+    } catch (e) {}
+  }, [soundEnabled]);
+
+  const exportChat = () => {
+    let chatText = "CosmosAI Chat Export\n\n";
+    messages.forEach(msg => {
+      const role = msg.role === 'user' ? 'You' : 'CosmosAI';
+      chatText += `${role} (${new Date(msg.timestamp).toLocaleString()}):\n${msg.content}\n\n`;
+    });
+    
+    const blob = new Blob([chatText], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `cosmos-chat-${new Date().toISOString().slice(0,10)}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   const sendMessage = async (content) => {
     setError(null);
@@ -94,6 +135,7 @@ export default function ChatWindow({ onBack, initialPrompt }) {
 
       setMessages((prev) => [...prev, botMessage]);
       setStreamingContent('');
+      playPopSound();
     } catch (err) {
       setError(err.message || 'Something went wrong. Please try again.');
     } finally {
@@ -122,7 +164,7 @@ export default function ChatWindow({ onBack, initialPrompt }) {
     <div className={styles.container}>
       {/* Header */}
       <div className={styles.header}>
-        <button className={styles.backButton} onClick={onBack} aria-label="Go back" id="back-button">
+        <button className={styles.headerButton} onClick={onBack} aria-label="Go back" title="Go back" id="back-button">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="15 18 9 12 15 6" />
           </svg>
@@ -142,7 +184,20 @@ export default function ChatWindow({ onBack, initialPrompt }) {
             </span>
           </div>
         </div>
-        <button className={styles.clearButton} onClick={() => { setMessages([]); setError(null); }} aria-label="Clear chat" id="clear-chat">
+        
+        <button className={styles.headerButton} onClick={() => setSoundEnabled(!soundEnabled)} aria-label={soundEnabled ? "Mute sounds" : "Enable sounds"} title="Toggle Sound">
+          {soundEnabled ? (
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+          ) : (
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+          )}
+        </button>
+        
+        <button className={styles.headerButton} onClick={exportChat} aria-label="Export chat" title="Export Chat">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        </button>
+
+        <button className={styles.headerButton} onClick={() => { setMessages([]); setError(null); }} aria-label="Clear chat" title="Clear Chat" id="clear-chat">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="1 4 1 10 7 10" />
             <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />

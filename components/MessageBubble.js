@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import styles from './MessageBubble.module.css';
 
 export default function MessageBubble({ message, isStreaming }) {
@@ -42,7 +43,7 @@ export default function MessageBubble({ message, isStreaming }) {
           <p className={styles.userText}>{message.content}</p>
         ) : (
           <div className="markdown-content">
-            <ReactMarkdown>{message.content}</ReactMarkdown>
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{message.content}</ReactMarkdown>
             {!isStreaming && (
               <button 
                 className={styles.copyButton} 
